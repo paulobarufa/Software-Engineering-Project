@@ -1,35 +1,87 @@
 import java.util.Scanner;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Quiz {
 
 	public static void main( String[] args) {
 
-		String question = "Which is the odd one out?";
-		String[] answers = {"Eagle", "Dragon", "Unicorn", "Lion"};
-		String selection;
-		int correct = 0;
-		int i = 0;
+		try {
+			//Add filename as argument rather than having hard coded into Questions class
+			Questions questions = new Questions();
+			String selection;
+			int[] stats = {0,0,0,0,0,0,0,0,0,0};
+			int score = 0;
+			int i = 0;
 
-		Scanner user_input = new Scanner( System.in );
+			//Create question and answer arrays
+			String[] allQuestions = questions.question();
+			String[][] allAnswers = questions.answers();
 
-		while ( i < 10 ) {
+			Scanner user_input = new Scanner( System.in );
 
-			System.out.println(question);
-			System.out.println("A: " + answers[0] + ", B: " + answers[1] + ", C: " + answers[2] + ", D: " + answers[3]);
-			System.out.println("Please enter your selection:");
-			selection = user_input.next( );
+			//Loop for each question
+			while ( i < 10 ) {
 
-			if ( selection.equals("A") ) {
-				System.out.println("Correct. All the others are national animals of Great Britain.");
-				correct++;
+				//Mix up answers
+				String correctAnswer = allAnswers[i][0];
+
+				//Code adapted from [insert reference]
+				int index;
+				String temp;
+     			Random random = new Random();
+     			for (int j = allAnswers[i].length - 1; j > 0; j--) {
+         			index = random.nextInt(j + 1);
+         			temp = allAnswers[i][index];
+         			allAnswers[i][index] = allAnswers[i][j];
+         			allAnswers[i][j] = temp;
+     			}
+
+     			//Determine which is the correct answer
+     			String correctLetter;
+
+     			if (allAnswers[i][0].equals(correctAnswer)) {
+     				correctLetter = "A";
+     			} 
+     			else if (allAnswers[i][1].equals(correctAnswer)) {
+     				correctLetter = "B";
+     			}
+     			else if (allAnswers[i][2].equals(correctAnswer)) {
+     				correctLetter = "C";
+     			}
+     			else {
+     				correctLetter = "D";
+     			}
+
+     			//Display questions and answers
+				System.out.println(allQuestions[i]);
+			 	System.out.println("A: " + allAnswers[i][0] + ", B: " + allAnswers[i][1] + ", C: " + allAnswers[i][2] + ", D: " + allAnswers[i][3]);
+			 	System.out.println("Please enter your selection:");
+			 	//Get user's answer and convert to uppercase to allow for typing in lowercase
+			 	selection = user_input.next( ).toUpperCase();
+			 	//Check answer is correct
+			 	if ( selection.equals(correctLetter) ) {
+			 		System.out.println("Correct.");
+			 		score++;
+			 		stats[i] = 1;
+			 	}
+			 	else if ( selection.toUpperCase().equals("EXIT")) {
+			 		i = 9;
+			 	}
+			 	else {
+			 		System.out.println("Incorrect. The answer was " + correctAnswer + ".");
+			 		stats[i] = 2;
+			 	}
+
+				i++;
 			}
-			else {
-				System.out.println("Incorrect. The eagle is the only one that is not a national animal of Great Britain.");
-			}
 
-			i++;
+			System.out.println("Score: " + score +"/10");
+			System.out.println(Arrays.toString(stats));
+			//Save stats to file
 		}
-
-		System.out.println("Score: " + correct +"/10");
+		catch( Exception e ) {
+			//Do Nothing
+		}
 	}
 }
