@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.Random;
+import java.io.*;
 
 public class Quiz {
 
@@ -79,6 +80,19 @@ public class Quiz {
 			System.out.println("Score: " + score +"/10");
 			System.out.println(Arrays.toString(stats));
 			//Save stats to file
+
+			try {
+
+            	FileWriter writer = new FileWriter("results.txt", true);
+            	PrintWriter out = new PrintWriter( writer );
+
+            	out.println( stats[0] + "," + stats[1] + "," + stats[2] + "," + stats[3] + "," + stats[4] + "," + stats[5] + "," + stats[6] + "," + stats[7] + "," + stats[8] + "," + stats[9] );
+
+            	out.close();
+        	}
+        	catch ( Exception e ) {
+            	System.out.println( e );
+        }
 		}
 		catch( Exception e ) {
 			//Do Nothing
