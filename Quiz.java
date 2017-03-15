@@ -2,10 +2,29 @@ import java.util.Scanner;
 import java.util.Arrays;
 import java.util.Random;
 import java.io.*;
+import javafx.application.*;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class Quiz {
+import javafx.scene.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.*;
+import javafx.scene.control.*;
+import javafx.event.*;
+import javafx.scene.layout.*;
+import javafx.geometry.*;
+import javafx.application.*;
+
+public class Quiz extends Application {
+
+	Label response;
 
 	public static void main( String[] args) {
+
+		launch(args);
 
 		try {
 			//Add filename as argument rather than having hard coded into Questions class
@@ -97,5 +116,67 @@ public class Quiz {
 		catch( Exception e ) {
 			//Do Nothing
 		}
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		primaryStage.setTitle("Quiz");
+
+    	FlowPane rootNode = new FlowPane(Orientation.VERTICAL, 0, 10);
+    	rootNode.setAlignment(Pos.CENTER_LEFT);
+    	rootNode.setPadding(new Insets(100, 100, 100, 400));
+
+    	Scene scene = new Scene(rootNode, 1500,900);
+
+    	primaryStage.setScene(scene);
+
+    	Label question = new Label("Question");
+    	response = new Label;
+
+    	RadioButton answer1 = new RadioButton("1");
+    	RadioButton answer2 = new RadioButton("2");
+    	RadioButton answer3 = new RadioButton("3");
+    	RadioButton answer4 = new RadioButton("4");
+
+    	ToggleGroup tg = new ToggleGroup();
+
+    	answer1.setToggleGroup(tg);
+    	answer2.setToggleGroup(tg);
+    	answer3.setToggleGroup(tg);
+    	answer4.setToggleGroup(tg);
+
+    	answer1.setOnAction( new EventHandler<ActionEvent>() {
+    		@Override
+    			public void handle(ActionEvent ae) {
+    				response.setText("A");
+    			}
+    	});
+
+    	answer2.setOnAction( new EventHandler<ActionEvent>() {
+    		@Override
+    			public void handle(ActionEvent ae) {
+    				response.setText("B");
+    			}
+    	});
+
+    	answer3.setOnAction( new EventHandler<ActionEvent>() {
+    		@Override
+    			public void handle(ActionEvent ae) {
+    				response.setText("C");
+    			}
+    	});
+
+    	answer4.setOnAction( new EventHandler<ActionEvent>() {
+    		@Override
+    			public void handle(ActionEvent ae) {
+    				response.setText("D");
+    			}
+    	});
+
+    	answer1.fire();
+
+    	rootNode.getChildren().addAll(question, answer1, answer2, answer3, answer4, response);
+
+		primaryStage.show();
 	}
 }
