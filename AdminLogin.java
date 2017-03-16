@@ -37,6 +37,9 @@ public class AdminLogin extends Application {
 				if (temp1 == User1 && temp2 == Pwd1) {
 					// if login success
 					prompt_txt.setText("Welcome!");
+					// link to manage quiz
+					// Scene firstScene = firstTopicScene();
+					// thestage.setScene(firstScene);
 					
 				} else {
 					// if login fail
@@ -52,8 +55,8 @@ public class AdminLogin extends Application {
 		
 		Scene scene = new Scene(root);
 		adminstage.setScene(scene);
-		adminstage.setWidth(200);
-		adminstage.setHeight(200);
+		adminstage.setWidth(1200);
+		adminstage.setHeight(800);
 		adminstage.setTitle("Interactive Quiz - Admin Login");
 		
 		

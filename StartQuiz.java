@@ -23,13 +23,16 @@ public class StartQuiz extends Application {
 		
 		start_btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent args){
-				// link to start quiz
+				// Link to Start Quiz
 			}
 		});
 		
 		admin_btn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent args){			
-				Application.launch(AdminLogin.class);
+			public void handle(ActionEvent args){
+				// Link to Admin Start Page ?
+				// Application.launch(AdminLogin.class);
+				// Scene AdminLoginScene = firstTopicScene();
+				// thestage.setScene(AdminLoginScene);
 			}
 		});
 		
@@ -40,8 +43,8 @@ public class StartQuiz extends Application {
 		Scene scene = new Scene(root);
 		
 		startstage.setScene(scene);
-		startstage.setWidth(420);
-		startstage.setHeight(300);
+		startstage.setWidth(1200);
+		startstage.setHeight(800);
 		startstage.setTitle("Interactive Quiz - Start Quiz");
 		
 		main_txt.setFont(Font.font ("Comic Sans MS", 24));
