@@ -20,123 +20,69 @@ import javafx.application.*;
 
 public class Quiz extends Application {
 
-	Label response;
+	int score;
+	int i;
+	Boolean next;
+
+	String[] allQuestions;
+	String[][] allAnswers;
+	int[] stats;
+
 
 	public static void main( String[] args) {
 
 		launch(args);
-
-		try {
-			//Add filename as argument rather than having hard coded into Questions class
-			Questions questions = new Questions();
-			String selection;
-			int[] stats = {0,0,0,0,0,0,0,0,0,0};
-			int score = 0;
-			int i = 0;
-
-			//Create question and answer arrays
-			String[] allQuestions = questions.question();
-			String[][] allAnswers = questions.answers();
-
-			Scanner user_input = new Scanner( System.in );
-
-			//Loop for each question
-			while ( i < 10 ) {
-
-				//Mix up answers
-				String correctAnswer = allAnswers[i][0];
-
-				//Code adapted from [insert reference]
-				int index;
-				String temp;
-     			Random random = new Random();
-     			for (int j = allAnswers[i].length - 1; j > 0; j--) {
-         			index = random.nextInt(j + 1);
-         			temp = allAnswers[i][index];
-         			allAnswers[i][index] = allAnswers[i][j];
-         			allAnswers[i][j] = temp;
-     			}
-
-     			//Determine which is the correct answer
-     			String correctLetter;
-
-     			if (allAnswers[i][0].equals(correctAnswer)) {
-     				correctLetter = "A";
-     			} 
-     			else if (allAnswers[i][1].equals(correctAnswer)) {
-     				correctLetter = "B";
-     			}
-     			else if (allAnswers[i][2].equals(correctAnswer)) {
-     				correctLetter = "C";
-     			}
-     			else {
-     				correctLetter = "D";
-     			}
-
-     			//Display questions and answers
-				System.out.println(allQuestions[i]);
-			 	System.out.println("A: " + allAnswers[i][0] + ", B: " + allAnswers[i][1] + ", C: " + allAnswers[i][2] + ", D: " + allAnswers[i][3]);
-			 	System.out.println("Please enter your selection:");
-			 	//Get user's answer and convert to uppercase to allow for typing in lowercase
-			 	selection = user_input.next( ).toUpperCase();
-			 	//Check answer is correct
-			 	if ( selection.equals(correctLetter) ) {
-			 		System.out.println("Correct.");
-			 		score++;
-			 		stats[i] = 1;
-			 	}
-			 	else if ( selection.toUpperCase().equals("EXIT")) {
-			 		i = 9;
-			 	}
-			 	else {
-			 		System.out.println("Incorrect. The answer was " + correctAnswer + ".");
-			 		stats[i] = 2;
-			 	}
-
-				i++;
-			}
-
-			System.out.println("Score: " + score +"/10");
-			System.out.println(Arrays.toString(stats));
-			//Save stats to file
-
-			try {
-
-            	FileWriter writer = new FileWriter("results.txt", true);
-            	PrintWriter out = new PrintWriter( writer );
-
-            	out.println( stats[0] + "," + stats[1] + "," + stats[2] + "," + stats[3] + "," + stats[4] + "," + stats[5] + "," + stats[6] + "," + stats[7] + "," + stats[8] + "," + stats[9] );
-
-            	out.close();
-        	}
-        	catch ( Exception e ) {
-            	System.out.println( e );
-        }
-		}
-		catch( Exception e ) {
-			//Do Nothing
-		}
 	}
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Quiz");
-
-    	FlowPane rootNode = new FlowPane(Orientation.VERTICAL, 0, 10);
+	//n is question number to show
+	public void showQuestion(int i, Stage primaryStage){
+		FlowPane rootNode = new FlowPane(Orientation.VERTICAL, 0, 10);
     	rootNode.setAlignment(Pos.CENTER_LEFT);
     	rootNode.setPadding(new Insets(100, 100, 100, 400));
+		
+		Scene scene = new Scene(rootNode, 1500,900);
 
-    	Scene scene = new Scene(rootNode, 1500,900);
+		primaryStage.setScene(scene);
 
-    	primaryStage.setScene(scene);
+		//Mix up answers
+		String correctAnswer = allAnswers[i][0];
 
-    	Label question = new Label("Question");
-    	response = new Label;
+		//Code adapted from [insert reference]
+		int index;
+		String temp;
+			Random random = new Random();
+			for (int j = allAnswers[i].length - 1; j > 0; j--) {
+ 			index = random.nextInt(j + 1);
+ 			temp = allAnswers[i][index];
+ 			allAnswers[i][index] = allAnswers[i][j];
+ 			allAnswers[i][j] = temp;
+			}
 
-    	RadioButton answer1 = new RadioButton("1");
-    	RadioButton answer2 = new RadioButton("2");
-    	RadioButton answer3 = new RadioButton("3");
-    	RadioButton answer4 = new RadioButton("4");
+			//Determine which is the correct answer
+			Label correctLetter = new Label("");
+
+			if (allAnswers[i][0].equals(correctAnswer)) {
+				correctLetter.setText("A");
+			} 
+			else if (allAnswers[i][1].equals(correctAnswer)) {
+				correctLetter.setText("B");
+			}
+			else if (allAnswers[i][2].equals(correctAnswer)) {
+				correctLetter.setText("C");
+			}
+			else {
+				correctLetter.setText("D");
+			}
+
+			//Display questions and answers
+		Label question = new Label(allQuestions[i]);
+		Label result = new Label("");
+		Label response = new Label("");
+		
+    	RadioButton answer1 = new RadioButton(allAnswers[i][0]);
+    	RadioButton answer2 = new RadioButton(allAnswers[i][1]);
+    	RadioButton answer3 = new RadioButton(allAnswers[i][2]);
+    	RadioButton answer4 = new RadioButton(allAnswers[i][3]);
 
     	ToggleGroup tg = new ToggleGroup();
 
@@ -144,6 +90,12 @@ public class Quiz extends Application {
     	answer2.setToggleGroup(tg);
     	answer3.setToggleGroup(tg);
     	answer4.setToggleGroup(tg);
+
+    	Button select = new Button("Select");
+    	select.setPrefWidth(60);
+
+    	Button nextBtn = new Button("Next");
+    	nextBtn.setPrefWidth(60);
 
     	answer1.setOnAction( new EventHandler<ActionEvent>() {
     		@Override
@@ -173,10 +125,80 @@ public class Quiz extends Application {
     			}
     	});
 
+    	select.setOnAction( new EventHandler<ActionEvent>() {
+    		@Override
+    			public void handle(ActionEvent ae) {
+    				if (response.getText().equals(correctLetter.getText())) {
+    					result.setText("Correct");
+    					score++;
+			 	 		stats[i] = 1;
+    				} else {
+    					result.setText("Incorrect. The answer was " + correctAnswer + ".");
+    					stats[i] = 2;
+    				}
+    				select.setDisable(true);
+    			}
+    	});
+
+    	nextBtn.setOnAction( new EventHandler<ActionEvent>() {
+    		@Override
+    			public void handle(ActionEvent ae) {
+    				if(i < allQuestions.length-1){
+    					showQuestion(i+1, primaryStage);
+    				}else{
+    					System.out.println("We have reached the last question.");
+    					primaryStage.close();
+
+    					try {
+
+			             	FileWriter writer = new FileWriter("results.txt", true);
+			             	PrintWriter out = new PrintWriter( writer );
+
+			             	out.println( stats[0] + "," + stats[1] + "," + stats[2] + "," + stats[3] + "," + stats[4] + "," + stats[5] + "," + stats[6] + "," + stats[7] + "," + stats[8] + "," + stats[9] );
+
+			             	out.close();
+			         	}
+			         	catch ( Exception e ) {
+			             	System.out.println( e );
+			 	        }
+    				}
+    			}
+    	});
+
     	answer1.fire();
 
-    	rootNode.getChildren().addAll(question, answer1, answer2, answer3, answer4, response);
+    	rootNode.getChildren().addAll(question, answer1, answer2, answer3, answer4, select, result, nextBtn);
+    	primaryStage.setScene(scene);
+    	primaryStage.show();
+	}
 
-		primaryStage.show();
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+
+    	try {
+			//Add filename as argument rather than having hard coded into Questions class
+			Questions questions = new Questions();
+			String selection;
+			stats = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+			i = 0;
+			score = 0;
+
+			//Create question and answer arrays
+			allQuestions = questions.question();
+			allAnswers = questions.answers();
+
+			primaryStage.setTitle("Quiz");
+
+			showQuestion(0, primaryStage);
+
+		// 	System.out.println("Score: " + score +"/10");
+		// 	System.out.println(Arrays.toString(stats));
+		 	//Save stats to file
+
+		}
+		catch( Exception e ) {
+			//Do Nothing
+		}
+
 	}
 }
