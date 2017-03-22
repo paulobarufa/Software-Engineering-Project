@@ -3,9 +3,6 @@ import java.util.Arrays;
 import java.util.Random;
 import java.io.*;
 import javafx.application.*;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -22,7 +19,6 @@ public class Quiz extends Application {
 
 	int score;
 	int i;
-	Boolean next;
 
 	String[] allQuestions;
 	String[][] allAnswers;
@@ -38,7 +34,7 @@ public class Quiz extends Application {
 	public void showQuestion(int i, Stage primaryStage){
 		FlowPane rootNode = new FlowPane(Orientation.VERTICAL, 0, 10);
     	rootNode.setAlignment(Pos.CENTER_LEFT);
-    	rootNode.setPadding(new Insets(100, 100, 100, 400));
+    	rootNode.setPadding(new Insets(0, 0, 0, 500));
 		
 		Scene scene = new Scene(rootNode, 1500,900);
 
@@ -96,6 +92,10 @@ public class Quiz extends Application {
 
     	Button nextBtn = new Button("Next");
     	nextBtn.setPrefWidth(60);
+    	nextBtn.setDisable(true);
+
+    	Button exit = new Button("Exit");
+    	exit.setPrefWidth(60);
 
     	answer1.setOnAction( new EventHandler<ActionEvent>() {
     		@Override
@@ -137,6 +137,7 @@ public class Quiz extends Application {
     					stats[i] = 2;
     				}
     				select.setDisable(true);
+    				nextBtn.setDisable(false);
     			}
     	});
 
@@ -147,6 +148,7 @@ public class Quiz extends Application {
     					showQuestion(i+1, primaryStage);
     				}else{
     					System.out.println("We have reached the last question.");
+    					System.out.println("Score: " + score + "/10");
     					primaryStage.close();
 
     					try {
@@ -165,9 +167,32 @@ public class Quiz extends Application {
     			}
     	});
 
+    	exit.setOnAction( new EventHandler<ActionEvent>() {
+    		@Override
+    			public void handle(ActionEvent ae) {
+					System.out.println("We have exited before the last question.");
+					System.out.println("Score: " + score + "/10");
+					primaryStage.close();
+
+					try {
+
+		             	FileWriter writer = new FileWriter("results.txt", true);
+		             	PrintWriter out = new PrintWriter( writer );
+
+		             	out.println( stats[0] + "," + stats[1] + "," + stats[2] + "," + stats[3] + "," + stats[4] + "," + stats[5] + "," + stats[6] + "," + stats[7] + "," + stats[8] + "," + stats[9] );
+
+		             	out.close();
+		         	}
+		         	catch ( Exception e ) {
+		             	System.out.println( e );
+		 	        }
+    				
+    			}
+    	});
+
     	answer1.fire();
 
-    	rootNode.getChildren().addAll(question, answer1, answer2, answer3, answer4, select, result, nextBtn);
+    	rootNode.getChildren().addAll(question, answer1, answer2, answer3, answer4, select, result, nextBtn, exit);
     	primaryStage.setScene(scene);
     	primaryStage.show();
 	}
@@ -184,16 +209,12 @@ public class Quiz extends Application {
 			score = 0;
 
 			//Create question and answer arrays
-			allQuestions = questions.question();
-			allAnswers = questions.answers();
+			allQuestions = questions.question("SampleQuestions.txt");
+			allAnswers = questions.answers("SampleQuestions.txt");
 
 			primaryStage.setTitle("Quiz");
 
 			showQuestion(0, primaryStage);
-
-		// 	System.out.println("Score: " + score +"/10");
-		// 	System.out.println(Arrays.toString(stats));
-		 	//Save stats to file
 
 		}
 		catch( Exception e ) {
