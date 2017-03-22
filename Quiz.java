@@ -241,7 +241,26 @@ public class Quiz extends Application {
 			stats = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 			i = 0;
 			score = 0;
-			String fileName = "SampleQuestions.txt";
+
+			File fileIn = new File("data.csv");
+
+			String topic;
+
+			try {
+
+				Scanner in = new Scanner(fileIn);
+				String line = in.nextLine();
+
+				String[] parts = line.split(",");
+				topic = parts[4];
+
+			}
+			catch( Exception e ) {
+				System.out.println("Problem reading file");
+				throw e;
+			}
+
+			String fileName = topic + ".csv";
 
 			//Create question and answer arrays
 			allQuestions = questions.question(fileName);
