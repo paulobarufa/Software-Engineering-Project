@@ -39,7 +39,7 @@ public class AdminLogin extends Application {
 				temp1 = user_fld.getText();
 				temp2 = pwd_fld.getText();
 				
-				if (temp1 == User1 && temp2 == Pwd1) {
+				if (temp1.equals(User1) && temp2.equals(Pwd1)) {
 					// if login success
 					prompt_txt.setText("Welcome!");
 					System.out.println("temp1: " + temp1 + " temp2: " + temp2 + "  User1: " + User1 + " Pwd1: " + Pwd1);
