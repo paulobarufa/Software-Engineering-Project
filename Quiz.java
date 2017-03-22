@@ -32,11 +32,44 @@ public class Quiz extends Application {
 
 	//n is question number to show
 	public void showQuestion(int i, Stage primaryStage){
+
+		Group root = new Group();
+		Scene scene = new Scene(root, 1500,900);
+		Random rand = new Random(System.currentTimeMillis());
+		
+		int red = 0;
+		int blue = 0;
+		int green = 0;	
+		int rot = 0;
+		
+		
+		for (int j=0; j<500; j++){
+			int x = rand.nextInt((int) scene.getWidth());
+			int y = rand.nextInt(200);
+			red = rand.nextInt(100);
+			green = rand.nextInt(200);
+			blue = rand.nextInt(200);	
+			rot = rand.nextInt(360);
+			
+			Text text = new Text(x,y, "quiz");
+			Font serifSmall = new Font ("Serif", 18);
+			text.setFont(serifSmall);
+			text.setFill(Color.rgb(red, blue, green, .4));
+			text.setRotate(rot);
+			root.getChildren().add(text);
+			
+		}
+		
+
+		Text text2 = new Text(570,120,"Quiz");
+		text2.setFont(Font.font("Serif", FontWeight.BOLD, 80));		
+		root.getChildren().add(text2);
+
 		FlowPane rootNode = new FlowPane(Orientation.VERTICAL, 0, 10);
     	rootNode.setAlignment(Pos.CENTER_LEFT);
-    	rootNode.setPadding(new Insets(0, 0, 0, 500));
+    	rootNode.setPadding(new Insets(300, 0, 0, 500));
 		
-		Scene scene = new Scene(rootNode, 1500,900);
+		//Scene scene = new Scene(rootNode, 1500,900);
 
 		primaryStage.setScene(scene);
 
@@ -153,7 +186,7 @@ public class Quiz extends Application {
 
     					try {
 
-			             	FileWriter writer = new FileWriter("results.txt", true);
+			             	FileWriter writer = new FileWriter("data.csv", true);
 			             	PrintWriter out = new PrintWriter( writer );
 
 			             	out.println( stats[0] + "," + stats[1] + "," + stats[2] + "," + stats[3] + "," + stats[4] + "," + stats[5] + "," + stats[6] + "," + stats[7] + "," + stats[8] + "," + stats[9] );
@@ -176,7 +209,7 @@ public class Quiz extends Application {
 
 					try {
 
-		             	FileWriter writer = new FileWriter("results.txt", true);
+		             	FileWriter writer = new FileWriter("data.csv", true);
 		             	PrintWriter out = new PrintWriter( writer );
 
 		             	out.println( stats[0] + "," + stats[1] + "," + stats[2] + "," + stats[3] + "," + stats[4] + "," + stats[5] + "," + stats[6] + "," + stats[7] + "," + stats[8] + "," + stats[9] );
@@ -193,6 +226,7 @@ public class Quiz extends Application {
     	answer1.fire();
 
     	rootNode.getChildren().addAll(question, answer1, answer2, answer3, answer4, select, result, nextBtn, exit);
+    	root.getChildren().add(rootNode);
     	primaryStage.setScene(scene);
     	primaryStage.show();
 	}
@@ -207,10 +241,11 @@ public class Quiz extends Application {
 			stats = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 			i = 0;
 			score = 0;
+			String fileName = "SampleQuestions.txt";
 
 			//Create question and answer arrays
-			allQuestions = questions.question("SampleQuestions.txt");
-			allAnswers = questions.answers("SampleQuestions.txt");
+			allQuestions = questions.question(fileName);
+			allAnswers = questions.answers(fileName);
 
 			primaryStage.setTitle("Quiz");
 
