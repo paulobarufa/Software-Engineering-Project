@@ -30,7 +30,7 @@ public class StartQuiz extends Application {
 		admin_btn.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent args){
 				// Link to Admin Start Page ?
-				// Application.launch(AdminLogin.class);
+				Application.launch(AdminLogin.class);
 				// Scene AdminLoginScene = firstTopicScene();
 				// thestage.setScene(AdminLoginScene);
 			}

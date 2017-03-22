@@ -13,19 +13,24 @@ public class AdminLogin extends Application {
 	
 	Label title_txt;
 	Button login_btn;
+	Label user_txt;
 	TextField user_fld;
+	Label pwd_txt;
 	TextField pwd_fld;
 	Label prompt_txt;
 	
-	String User1 = "rick";
-	String Pwd1 = "astley";
+	String User1 = "admin";
+	String Pwd1 = "adminpw";
 	String temp1 = "";
 	String temp2 = "";
 	
 	public void start(Stage adminstage) throws Exception {
+		
 		title_txt = new Label("Admin Login");
-		user_fld = new TextField("Name");
-		pwd_fld = new TextField("Password");
+		user_txt = new Label("Username");
+		user_fld = new TextField("");
+		pwd_txt = new Label("Password");
+		pwd_fld = new TextField("");
 		login_btn = new Button("Log In");
 		prompt_txt = new Label("");
 		
@@ -37,6 +42,7 @@ public class AdminLogin extends Application {
 				if (temp1 == User1 && temp2 == Pwd1) {
 					// if login success
 					prompt_txt.setText("Welcome!");
+					System.out.println("temp1: " + temp1 + " temp2: " + temp2 + "  User1: " + User1 + " Pwd1: " + Pwd1);
 					// link to manage quiz
 					// Scene firstScene = firstTopicScene();
 					// thestage.setScene(firstScene);
@@ -44,14 +50,14 @@ public class AdminLogin extends Application {
 				} else {
 					// if login fail
 					prompt_txt.setText("Incorrect Username or Password");
-					
+					System.out.println("temp1: " + temp1 + " temp2: " + temp2 + "  User1: " + User1 + " Pwd1: " + Pwd1);
 				}
 			}
 		});
 		
 		
 		VBox root = new VBox();
-		root.getChildren().addAll(title_txt, user_fld, pwd_fld, login_btn, prompt_txt);
+		root.getChildren().addAll(title_txt, user_txt, user_fld, pwd_txt, pwd_fld, login_btn, prompt_txt);
 		
 		Scene scene = new Scene(root);
 		adminstage.setScene(scene);
